@@ -14,23 +14,8 @@ import cors from "cors"
 
 const main = async () => {
   const app = express();
-  const httpServer = http.createServer(app);
-
-  const server = new ApolloServer({
-    schema: await buildSchema({
-      resolvers: [PoemResolver],
-    }),
-    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
-    // plugins: [
-    //   process.env.NODE_ENV === "production"
-    //     ? ApolloServerPluginLandingPageDisabled()
-    //     : ApolloServerPluginLandingPageGraphQLPlayground(),
-    // ],
-  });
 
   app.use(morgan("common"));
-  await server.start();
-  server.applyMiddleware({ app, path: "/" });
 
   // process.env.CORS_ORIGIN
 
@@ -46,10 +31,23 @@ const main = async () => {
     res.header("Access-Control-Allow-Origin", "*")
     next()
   })
-  app.options('*', (_, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*")
-    next()
-  })
+
+  const httpServer = http.createServer(app);
+
+  const server = new ApolloServer({
+    schema: await buildSchema({
+      resolvers: [PoemResolver],
+    }),
+    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+    // plugins: [
+    //   process.env.NODE_ENV === "production"
+    //     ? ApolloServerPluginLandingPageDisabled()
+    //     : ApolloServerPluginLandingPageGraphQLPlayground(),
+    // ],
+  });
+
+  await server.start();
+  server.applyMiddleware({ app, path: "/" });
 
   await new Promise((resolve) =>
     //@ts-ignore types on the listen function seem to not accept the resolve object
