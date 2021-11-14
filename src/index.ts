@@ -1,35 +1,25 @@
 import "./utils/withMongoose";
-import { ApolloServer } from "apollo-server-express";
-import express from "express";
 import { buildSchema } from "type-graphql";
 import { PoemResolver } from "./resolvers/PoemResolver";
-import morgan from "morgan";
+import { ApolloServer } from 'apollo-server-express';
+import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core';
+import express from 'express';
+import http from 'http';
 
-const main = async () => {
+async function startApolloServer() {
   const app = express();
-
-  app.use(morgan("common"));
-
+  const httpServer = http.createServer(app);
   const server = new ApolloServer({
     schema: await buildSchema({
       resolvers: [PoemResolver],
     }),
+    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   });
-
-  // process.env.CORS_ORIGIN
-  //const corsOptions = {
-  //  origin: true,
-  //  credentials: true,
-  //  optionSuccessStatus: 200,
-  //}
-
   await server.start();
-  server.applyMiddleware({ app, cors: false });
+  server.applyMiddleware({ app });
+  await new Promise<void>(resolve => httpServer.listen({ port: 4000 }, resolve));
+  console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`);
+}
 
-  app.listen(process.env.PORT, () => {
-    console.log(
-      `🚀 Server ready at http://localhost:${process.env.PORT}${server.graphqlPath}`
-    );
-  })
-};
-main();
+startApolloServer();
+
