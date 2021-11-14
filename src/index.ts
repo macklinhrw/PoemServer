@@ -31,6 +31,10 @@ const main = async () => {
     res.header("Access-Control-Allow-Origin", "*")
     next()
   })
+  app.options('*', (_, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*")
+    next()
+  })
 
   const httpServer = http.createServer(app);
 
