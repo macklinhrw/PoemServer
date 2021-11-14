@@ -27,7 +27,8 @@ export class PoemResolver {
     @Arg("content") content: string,
     @Arg("isDraft") isDraft: boolean,
     @Arg("hasTitle") hasTitle: boolean,
-    @Arg("slug") slug: string
+    @Arg("slug") slug: string,
+    @Arg("imageLink") imageLink: string,
   ) {
     const post = await Poem.create({
       title: title,
@@ -35,6 +36,7 @@ export class PoemResolver {
       isDraft: isDraft,
       hasTitle: hasTitle,
       slug: slug,
+      imageLink: imageLink,
     });
 
     return post;

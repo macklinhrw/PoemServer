@@ -20,6 +20,10 @@ export class PoemClass {
 
   @Field()
   @prop()
+  imageLink: string;
+
+  @Field()
+  @prop()
   content: string;
 
   @Field()
