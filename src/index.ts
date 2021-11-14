@@ -42,15 +42,6 @@ const main = async () => {
 
   app.use(cors(corsOptions))
 
-  app.use(function(_, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header(
-      "Access-Control-Allow-Headers",
-      "Origin, X-Requested-With, Content-Type, Accept"
-    );
-    next();
-  });
-
   await new Promise((resolve) =>
     //@ts-ignore types on the listen function seem to not accept the resolve object
     httpServer.listen({ port: process.env.PORT }, resolve)
