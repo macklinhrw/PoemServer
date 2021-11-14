@@ -17,8 +17,9 @@ async function startApolloServer() {
   });
   await server.start();
   server.applyMiddleware({ app });
-  await new Promise<void>(resolve => httpServer.listen({ port: 4000 }, resolve));
-  console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`);
+  let PORT = (process.env.NODE_ENV === "PRODUCTION") ? 4000 : process.env.PORT
+  await new Promise<void>(resolve => httpServer.listen({ port: PORT }, resolve));
+  console.log(`🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`);
 }
 
 startApolloServer();
