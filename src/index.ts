@@ -17,14 +17,14 @@ const main = async () => {
   });
 
   // process.env.CORS_ORIGIN
-  const corsOptions = {
-    origin: true,
-    credentials: true,
-    optionSuccessStatus: 200,
-  }
+  //const corsOptions = {
+  //  origin: true,
+  //  credentials: true,
+  //  optionSuccessStatus: 200,
+  //}
 
   await server.start();
-  server.applyMiddleware({ app, cors: corsOptions });
+  server.applyMiddleware({ app, cors: false });
 
   app.listen(process.env.PORT, () => {
     console.log(
