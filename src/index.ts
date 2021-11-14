@@ -43,6 +43,10 @@ const main = async () => {
     next();
   });
 
+
+  //@ts-ignore
+  app.options('*', cors())
+
   await new Promise((resolve) =>
     //@ts-ignore types on the listen function seem to not accept the resolve object
     httpServer.listen({ port: process.env.PORT }, resolve)
