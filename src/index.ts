@@ -6,7 +6,6 @@ import { PoemResolver } from "./resolvers/PoemResolver";
 import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
 import http from "http";
 import morgan from "morgan";
-import cors from "cors"
 // import {
 //   ApolloServerPluginLandingPageGraphQLPlayground,
 //   ApolloServerPluginLandingPageDisabled,
@@ -25,13 +24,7 @@ const main = async () => {
     optionSuccessStatus: 200,
   }
 
-  app.use(cors(corsOptions))
-
   app.all('*', (_, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*")
-    next()
-  })
-  app.options('*', (_, res, next) => {
     res.header("Access-Control-Allow-Origin", "*")
     next()
   })
@@ -51,7 +44,7 @@ const main = async () => {
   });
 
   await server.start();
-  server.applyMiddleware({ app, path: "/" });
+  server.applyMiddleware({ app, path: "/", cors: corsOptions });
 
   await new Promise((resolve) =>
     //@ts-ignore types on the listen function seem to not accept the resolve object
