@@ -6,6 +6,7 @@ import { PoemResolver } from "./resolvers/PoemResolver";
 import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
 import http from "http";
 import morgan from "morgan";
+import cors from "cors"
 // import {
 //   ApolloServerPluginLandingPageGraphQLPlayground,
 //   ApolloServerPluginLandingPageDisabled,
@@ -32,8 +33,8 @@ const main = async () => {
   server.applyMiddleware({ app, path: "/" });
 
   // process.env.CORS_ORIGIN
-  // app.use(cors({ origin: "localhost:19000" }));
-  app.use(function (_, res, next) {
+  app.use(cors());
+  app.use(function(_, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header(
       "Access-Control-Allow-Headers",
