@@ -4,28 +4,24 @@ import express from "express";
 import { buildSchema } from "type-graphql";
 import { PoemResolver } from "./resolvers/PoemResolver";
 import morgan from "morgan";
-// import {
-//   ApolloServerPluginLandingPageGraphQLPlayground,
-//   ApolloServerPluginLandingPageDisabled,
-// } from "apollo-server-core";
 
 const main = async () => {
   const app = express();
 
   app.use(morgan("common"));
 
-  // process.env.CORS_ORIGIN
-  const corsOptions = {
-    origin: '*',
-    credentials: true,
-    optionSuccessStatus: 200,
-  }
-
   const server = new ApolloServer({
     schema: await buildSchema({
       resolvers: [PoemResolver],
     }),
   });
+
+  // process.env.CORS_ORIGIN
+  const corsOptions = {
+    origin: true,
+    credentials: true,
+    optionSuccessStatus: 200,
+  }
 
   await server.start();
   server.applyMiddleware({ app, cors: corsOptions });
